@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8wx3hdpdrw8p"]
+
+[ext_resource type="Environment" uid="uid://ckiwtcdsam7ed" path="res://addons/godot-xr-tools/staging/staging_env.tres" id="1_tjnm0"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="2_wbvne"]
+[ext_resource type="Script" path="res://actors/XR/StartXR.cs" id="3_18nbs"]
+
+[node name="PlayerController" type="Node3D"]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+environment = ExtResource("1_tjnm0")
+
+[node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" instance=ExtResource("2_wbvne")]
+
+[node name="LeftHandController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/LeftHandController"]
+radius = 0.03
+
+[node name="RightHandController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightHandController"]
+radius = 0.03
+
+[node name="StartXR2" type="Node" parent="."]
+script = ExtResource("3_18nbs")
+
+[node name="EnterWebXR" type="CanvasLayer" parent="StartXR2"]
+visible = false
+
+[node name="EnterVRButton" type="Button" parent="StartXR2/EnterWebXR"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.0
+offset_top = -52.5
+offset_right = 132.0
+offset_bottom = 52.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Enter VR"
+
+[connection signal="pressed" from="StartXR2/EnterWebXR/EnterVRButton" to="StartXR2" method="_on_enter_webxr_button_pressed"]
